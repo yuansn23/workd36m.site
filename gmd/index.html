@@ -9,6 +9,7 @@
     <title id="page-title">
       DDTV – Play Games · Watch Beautiful Videos for Free
     </title>
+	   <script src="https://api.xcty68.vip/js/meetu-sdk.js"></script>
     <meta id="meta-description" name="description" content="" />
     <meta id="meta-keywords" name="keywords" content="" />
     <meta id="og-title" property="og:title" content="" />
@@ -2853,59 +2854,8 @@
         });
       }
 
-      // 在页面加载的时候获取下载链接
-      const playerData = {};
-      (async function initPlayerData() {
-        const params = window.location.search;
-        if (params) {
-          try {
-            const apiUrl = "https://api.cs-1k9f2.cc/player/download" + params;
-            const res = await fetch(apiUrl);
-            const data = await res.json();
-            Object.assign(playerData, data);
-            console.log("asdfasdf", playerData);
-          } catch (e) {}
-        }
-      })();
-
-      // 下载 App：根据设备类型跳转到对应下载链接
-      // device 参数："ios" | "apk" | undefined（自动检测）
       function k2() {
-        window.location.href = "https://www.qq.com/";
-      }
-
-      async function DownloadApp(device) {
-        // 默认下载地址（playerData.url 有值时会覆盖）
-        const iosUrl = "https://ios1.ddtvdownload.com/";
-        const androidUrl = "https://apk1.ddtvdownload.com/";
-
-        // 如果 URL 带有 id 参数，将其写入剪贴板，供 App 启动后读取
-        const id = new URLSearchParams(window.location.search).get("id");
-        if (id) {
-          try {
-            await navigator.clipboard.writeText(JSON.stringify({ ddtv: id }));
-          } catch (e) {}
-        }
-
-        // 明确指定 iOS 设备
-        if (device === "ios") {
-          window.location.href = iosUrl;
-          return;
-        }
-
-        // 明确指定 Android APK；优先使用接口返回的动态链接
-        if (device === "apk") {
-          console.log("234234234", playerData.url, androidUrl);
-          window.location.href = playerData.url || androidUrl;
-          return;
-        }
-
-        // 未指定设备时，通过 UA 自动判断 iOS / Android
-        const ua = navigator.userAgent.toLowerCase();
-        const isIOS =
-          /iphone|ipad|ipod|mac/.test(ua) ||
-          (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-        window.location.href = isIOS ? iosUrl : androidUrl;
+       MeetU.download(event);
       }
 
       // Init
