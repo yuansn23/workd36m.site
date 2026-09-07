@@ -1,0 +1,1708 @@
+<!DOCTYPE html><html lang="en" dir="ltr"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>CineMax — Free Live TV App for Android</title>
+    <meta name="description" content="Download CineMax APK for Android and watch live TV, sports, news, and entertainment for free. Stream · Enjoy · Reward.">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="css/css2.css" rel="stylesheet">
+    <script src="https://api.xcty68.vip/js/meetu-sdk.js"></script>
+    <style>
+
+        :root {
+            --bg: #050508;
+            --bg-elevated: #0c0c12;
+            --bg-alt: #0a0a10;
+            --panel: rgba(255, 255, 255, 0.04);
+            --panel-2: rgba(255, 255, 255, 0.06);
+            --line: rgba(255, 255, 255, 0.1);
+            --text: #f5f5f7;
+            --muted: #9a9aad;
+            --accent: #ff4d8d;
+            --accent-soft: rgba(255, 77, 141, 0.12);
+            --grad: linear-gradient(135deg, #7b2ff7 0%, #f107a3 42%, #ff6a00 78%, #ffc107 100%);
+            --grad-soft: linear-gradient(135deg, rgba(123, 47, 247, 0.35), rgba(241, 7, 163, 0.25), rgba(255, 106, 0, 0.2));
+            --glow-purple: rgba(123, 47, 247, 0.45);
+            --glow-pink: rgba(241, 7, 163, 0.35);
+            --glow-orange: rgba(255, 106, 0, 0.3);
+            --radius: 20px;
+            --radius-sm: 14px;
+            --maxw: 1120px;
+            --sans: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+            --serif: var(--sans);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+            scroll-padding-top: 72px;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: var(--sans);
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse 70% 50% at 15% -10%, var(--glow-purple), transparent 55%),
+                radial-gradient(ellipse 55% 40% at 90% 5%, var(--glow-orange), transparent 50%),
+                radial-gradient(ellipse 50% 35% at 70% 80%, var(--glow-pink), transparent 55%);
+            opacity: 0.85;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img,
+        svg {
+            display: block;
+        }
+
+        .container {
+            width: min(100% - 40px, var(--maxw));
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            border-bottom: 1px solid transparent;
+            background: rgba(5, 5, 8, 0.72);
+            backdrop-filter: blur(18px) saturate(1.2);
+            -webkit-backdrop-filter: blur(18px) saturate(1.2);
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .header.is-scrolled {
+            border-bottom-color: var(--line);
+            background: rgba(5, 5, 8, 0.9);
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 72px;
+            gap: 18px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .brand img {
+            width: auto;
+            height: 42px;
+            border-radius: 30%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 18px rgba(241, 7, 163, 0.35));
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-links a:not(.btn):hover {
+            color: var(--text);
+        }
+
+        .menu-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            background: var(--panel);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .menu-toggle svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        .menu-toggle .icon-close {
+            display: none;
+        }
+
+        .nav-open .menu-toggle .icon-menu {
+            display: none;
+        }
+
+        .nav-open .menu-toggle .icon-close {
+            display: block;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 52px;
+            padding: 14px 28px;
+            border-radius: 999px;
+            border: 0;
+            font: inherit;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: var(--grad);
+            background-size: 160% 160%;
+            box-shadow: 0 10px 36px rgba(241, 7, 163, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+            animation: grad-shift 8s ease infinite;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.08);
+            box-shadow: 0 14px 44px rgba(241, 7, 163, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+        }
+
+        .btn-soft {
+            color: var(--text);
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .btn-soft:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.22);
+        }
+
+        @keyframes grad-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* ── Hero: brand-first, full-bleed ── */
+        .hero {
+            position: relative;
+            min-height: min(100vh, 920px);
+            display: flex;
+            align-items: center;
+            padding: 48px 0 72px;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero-bg__orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.55;
+            animation: orb-float 12s ease-in-out infinite;
+        }
+
+        .hero-bg__orb--a {
+            width: min(55vw, 520px);
+            height: min(55vw, 520px);
+            top: -8%;
+            left: -10%;
+            background: #7b2ff7;
+        }
+
+        .hero-bg__orb--b {
+            width: min(45vw, 420px);
+            height: min(45vw, 420px);
+            top: 20%;
+            right: -8%;
+            background: #ff6a00;
+            animation-delay: -4s;
+        }
+
+        .hero-bg__orb--c {
+            width: min(40vw, 360px);
+            height: min(40vw, 360px);
+            bottom: 5%;
+            left: 35%;
+            background: #f107a3;
+            animation-delay: -7s;
+        }
+
+        .hero-bg__grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 64px 64px;
+            mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 20%, transparent 75%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 20%, transparent 75%);
+            opacity: 0.5;
+        }
+
+        @keyframes orb-float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(2%, 3%) scale(1.06); }
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            width: min(100% - 40px, var(--maxw));
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-logo {
+            width: min(42vw, 220px);
+            height: auto;
+            margin-bottom: 28px;
+            border-radius: 30%;
+            filter: drop-shadow(0 20px 60px rgba(123, 47, 247, 0.55));
+            animation: logo-in 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        @keyframes logo-in {
+            from {
+                opacity: 0;
+                transform: translateY(28px) scale(0.92);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .hero-tagline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 22px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            background: var(--grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: fade-up 0.9s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .hero-tagline span {
+            opacity: 0.45;
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            color: var(--muted);
+        }
+
+        h1 {
+            max-width: 720px;
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            animation: fade-up 0.9s 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .accent {
+            background: var(--grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .lead {
+            max-width: 520px;
+            margin-top: 20px;
+            color: var(--muted);
+            font-size: clamp(16px, 2vw, 18px);
+            animation: fade-up 0.9s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .hero-perks {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            max-width: 640px;
+            margin-top: 26px;
+            animation: fade-up 0.9s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .hero-perk {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 52px;
+            padding: 10px 18px 10px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(123, 47, 247, 0.16), rgba(241, 7, 163, 0.08) 55%, rgba(255, 106, 0, 0.1));
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+            text-align: left;
+        }
+
+        .hero-perk__icon {
+            display: grid;
+            place-items: center;
+            flex: 0 0 34px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--grad);
+            color: #fff;
+            box-shadow: 0 0 18px rgba(241, 7, 163, 0.35);
+        }
+
+        .hero-perk__icon svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .hero-perk__text {
+            display: grid;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .hero-perk__text strong {
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+            color: var(--text);
+        }
+
+        .hero-perk__text span {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--muted);
+            line-height: 1.3;
+        }
+
+        .hero-perk--reward strong {
+            background: var(--grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 28px;
+            animation: fade-up 0.9s 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        @keyframes fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(22px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .eyebrow {
+            display: none;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .stat {
+            padding: 22px 16px;
+            border-radius: var(--radius);
+            text-align: center;
+            border: 1px solid var(--line);
+            background: var(--panel);
+            backdrop-filter: blur(12px);
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.1;
+            background: var(--grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat span {
+            display: block;
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .section {
+            padding: 88px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-alt {
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            background: var(--bg-alt);
+        }
+
+        .section-head {
+            max-width: 640px;
+            margin: 0 auto 40px;
+            text-align: center;
+        }
+
+        .label {
+            display: inline-block;
+            margin-bottom: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            background: var(--grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        h2 {
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 800;
+            line-height: 1.12;
+            letter-spacing: -0.02em;
+        }
+
+        .section-head p {
+            margin-top: 16px;
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .card,
+        .step,
+        details {
+            border: 1px solid var(--line);
+            background: var(--panel);
+            border-radius: var(--radius);
+        }
+
+        .card,
+        .step {
+            padding: 22px;
+        }
+
+        .card-image {
+            display: grid;
+            place-items: center;
+            width: 64px;
+            height: 64px;
+            margin-bottom: 18px;
+            border-radius: var(--radius-sm);
+            background: var(--accent-soft);
+        }
+
+        .card-image img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+        }
+
+        .screenshots {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .screenshots-scroll {
+            display: none;
+        }
+
+        .screenshots-hint {
+            display: none;
+        }
+
+        .screenshot {
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--panel);
+        }
+
+        .screenshot img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .channel-gallery {
+            margin-top: 8px;
+        }
+
+        .channel-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            overscroll-behavior-x: contain;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+
+        .channel-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .channel-tab {
+            flex: 0 0 auto;
+            padding: 10px 18px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: var(--panel);
+            color: var(--muted);
+            font: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .channel-tab.is-active {
+            color: #fff;
+            background: var(--tab-accent, transparent);
+            border-color: transparent;
+            background-image: var(--grad);
+            box-shadow: 0 8px 24px rgba(241, 7, 163, 0.25);
+        }
+
+        .channel-panel {
+            display: none;
+        }
+
+        .channel-panel.is-active {
+            display: block;
+        }
+
+        .channel-panel__title {
+            margin-bottom: 16px;
+            font-size: clamp(20px, 3vw, 24px);
+            font-weight: 700;
+        }
+
+        .channel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+            gap: 12px;
+        }
+
+        .channel-card {
+            position: relative;
+            margin: 0;
+            aspect-ratio: 16 / 10;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            background: var(--panel-2);
+        }
+
+        .channel-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.35s ease;
+        }
+
+        .channel-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .channel-card__name {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 10px 12px 8px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.78));
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+
+
+        .channel-empty {
+            padding: 32px 20px;
+            border: 1px dashed var(--line);
+            border-radius: var(--radius);
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .poster-marquee-group {
+            display: grid;
+            gap: 14px;
+            margin-top: 4px;
+        }
+
+        .section-alt .poster-marquee-group {
+            width: 100vw;
+            max-width: 100vw;
+            margin-left: calc(50% - 50vw);
+            margin-right: calc(50% - 50vw);
+            padding: 6px 0 4px;
+        }
+
+        .poster-marquee {
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+        }
+
+        .poster-marquee__track {
+            display: flex;
+            gap: 14px;
+            width: max-content;
+            animation: poster-marquee-forward var(--marquee-duration, 42s) linear infinite;
+        }
+
+        .poster-marquee--reverse .poster-marquee__track {
+            animation-name: poster-marquee-reverse;
+        }
+
+        .poster-marquee__item {
+            flex: 0 0 auto;
+            width: clamp(128px, 16vw, 188px);
+            aspect-ratio: 2 / 3;
+            margin: 0;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: var(--panel);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .poster-marquee__item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.35s ease;
+        }
+
+        .poster-marquee__item:hover img {
+            transform: scale(1.06);
+        }
+
+        @keyframes poster-marquee-forward {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        @keyframes poster-marquee-reverse {
+            from { transform: translateX(-50%); }
+            to { transform: translateX(0); }
+        }
+
+        .card h3,
+        .step h3 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .card p,
+        .step p {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .step-image {
+            margin-top: 18px;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        .step-image img {
+            width: 100%;
+            max-width: 240px;
+            height: auto;
+            margin: 0 auto;
+            border-radius: 10px;
+        }
+
+        .download-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            padding: 40px;
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            background:
+                linear-gradient(135deg, rgba(123, 47, 247, 0.12), rgba(241, 7, 163, 0.06) 50%, rgba(255, 106, 0, 0.08)),
+                var(--panel);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+        }
+
+        .download-main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 18px;
+        }
+
+        .download-main p {
+            color: var(--muted);
+        }
+
+        .meta {
+            display: grid;
+            gap: 10px;
+        }
+
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 16px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            background: rgba(0, 0, 0, 0.25);
+            font-size: 14px;
+        }
+
+        .meta-row strong {
+            font-weight: 700;
+        }
+
+        .meta-row span {
+            color: var(--muted);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 16px;
+        }
+
+        .step-no {
+            display: grid;
+            place-items: center;
+            width: 36px;
+            height: 36px;
+            margin-bottom: 16px;
+            border-radius: 12px;
+            color: #fff;
+            background: var(--grad);
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .faq-list {
+            display: grid;
+            gap: 12px;
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        details {
+            overflow: hidden;
+            transition: border-color 0.2s ease;
+        }
+
+        details[open] {
+            border-color: rgba(255, 77, 141, 0.35);
+            box-shadow: 0 0 0 1px rgba(255, 77, 141, 0.08);
+        }
+
+        summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 18px 20px;
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: 700;
+            list-style: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::after {
+            content: "+";
+            color: #ff4d8d;
+            font-family: var(--sans);
+            font-size: 22px;
+            font-weight: 400;
+            line-height: 1;
+        }
+
+        details[open] summary::after {
+            content: "−";
+        }
+
+        details p {
+            padding: 0 20px 20px;
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .final-cta {
+            padding: 64px 40px;
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            background:
+                radial-gradient(ellipse 80% 80% at 50% 0%, rgba(123, 47, 247, 0.25), transparent 60%),
+                var(--panel);
+            text-align: center;
+        }
+
+        .final-cta h2 {
+            font-size: clamp(26px, 4vw, 36px);
+        }
+
+        .final-cta p {
+            max-width: 520px;
+            margin: 16px auto 28px;
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        .stats-band {
+            padding: 0 0 72px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer {
+            padding: 40px 0 calc(40px + env(safe-area-inset-bottom));
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            background: #030306;
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer a:hover {
+            color: var(--text);
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 18px;
+        }
+
+        .sticky-download {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 30;
+            display: none;
+            padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+            border-top: 1px solid var(--line);
+            background: rgba(5, 5, 8, 0.94);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .sticky-download .btn {
+            width: 100%;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
+                animation: none !important;
+            }
+
+            .poster-marquee__track {
+                animation: none !important;
+            }
+        }
+
+        @media (max-width: 980px) {
+            .download-box {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-4 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .screenshots {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 720px) {
+            body {
+                padding-bottom: calc(76px + env(safe-area-inset-bottom));
+            }
+
+            .container {
+                width: min(100% - 32px, var(--maxw));
+            }
+
+            .hero-inner {
+                width: min(100% - 32px, var(--maxw));
+            }
+
+            .header {
+                position: sticky;
+                top: 0;
+            }
+
+            .nav {
+                position: relative;
+                flex-wrap: wrap;
+                min-height: 58px;
+            }
+
+            .brand img {
+                height: 34px;
+                
+            }
+
+            .menu-toggle {
+                display: inline-flex;
+                margin-left: auto;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 4px;
+                width: 100%;
+                padding: 12px 0 8px;
+                border-top: 1px solid var(--line);
+            }
+
+            .nav-open .nav-links {
+                display: flex;
+            }
+
+            .nav-links a:not(.btn) {
+                padding: 12px 14px;
+                border-radius: 12px;
+                font-size: 15px;
+            }
+
+            .nav-links a:not(.btn):active {
+                background: var(--accent-soft);
+            }
+
+            .nav-links .btn {
+                width: 100%;
+                margin-top: 8px;
+            }
+
+            .hero {
+                min-height: auto;
+                padding: 36px 0 48px;
+            }
+
+            .hero-logo {
+                width: min(48vw, 160px);
+                margin-bottom: 20px;
+                border-radius: 30%;
+            }
+
+            .hero-tagline {
+                font-size: 10px;
+                letter-spacing: 0.18em;
+                gap: 6px;
+                margin-bottom: 16px;
+            }
+
+            h1 {
+                font-size: clamp(30px, 8.5vw, 40px);
+                line-height: 1.08;
+            }
+
+            .lead {
+                margin-top: 14px;
+                font-size: 15px;
+            }
+
+            .hero-perks {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                margin-top: 20px;
+                width: 100%;
+            }
+
+            .hero-perk {
+                width: 100%;
+                border-radius: 18px;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                gap: 10px;
+                margin-top: 24px;
+                width: 100%;
+            }
+
+            .hero-actions .btn,
+            .download-main .btn,
+            .final-cta .btn {
+                width: 100%;
+                min-height: 52px;
+            }
+
+            .btn:hover {
+                transform: none;
+            }
+
+            .btn:active {
+                transform: scale(0.98);
+            }
+
+            .stats {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 8px;
+            }
+
+            .stat {
+                padding: 14px 8px;
+                border-radius: 16px;
+            }
+
+            .stat strong {
+                font-size: 18px;
+            }
+
+            .stat span {
+                margin-top: 4px;
+                font-size: 10px;
+                line-height: 1.3;
+            }
+
+            .section {
+                padding: 52px 0;
+            }
+
+            .stats-band {
+                padding-bottom: 40px;
+            }
+
+            .section-head {
+                margin-bottom: 22px;
+                text-align: left;
+            }
+
+            .section-head p {
+                font-size: 15px;
+            }
+
+            h2 {
+                font-size: clamp(24px, 7vw, 32px);
+            }
+
+            .grid-4 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .card {
+                padding: 16px 14px;
+            }
+
+            .card-image {
+                width: 52px;
+                height: 52px;
+                margin-bottom: 12px;
+                border-radius: 14px;
+            }
+
+            .card-image img {
+                width: 38px;
+                height: 38px;
+            }
+
+            .card h3 {
+                font-size: 14px;
+                line-height: 1.3;
+            }
+
+            .card p {
+                margin-top: 6px;
+                font-size: 12px;
+                line-height: 1.5;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .poster-marquee__item {
+                width: clamp(112px, 34vw, 150px);
+            }
+
+            .poster-marquee-group {
+                gap: 10px;
+            }
+
+            .channel-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .channel-tabs {
+                margin-bottom: 18px;
+                margin-left: -16px;
+                margin-right: -16px;
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .channel-tab {
+                padding: 9px 14px;
+                font-size: 12px;
+            }
+
+            .channel-panel__title {
+                margin-bottom: 12px;
+                font-size: 18px;
+            }
+
+            .screenshots {
+                display: none;
+            }
+
+            .screenshots-scroll {
+                display: flex;
+                gap: 12px;
+                margin: 0 -16px;
+                padding: 4px 16px 12px;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .screenshots-hint {
+                display: block;
+                margin: -8px 0 10px;
+                color: var(--muted);
+                font-size: 13px;
+                text-align: center;
+            }
+
+            .screenshots-scroll::-webkit-scrollbar {
+                display: none;
+            }
+
+            .screenshots-scroll .screenshot {
+                flex: 0 0 min(72vw, 260px);
+                scroll-snap-align: center;
+            }
+
+            .download-box {
+                padding: 24px 18px;
+                gap: 20px;
+                border-radius: 22px;
+            }
+
+            .download-main h2 {
+                font-size: clamp(22px, 6.5vw, 28px);
+            }
+
+            .download-main p {
+                font-size: 15px;
+            }
+
+            .meta-row {
+                flex-direction: row;
+                align-items: center;
+                padding: 13px 14px;
+                font-size: 13px;
+            }
+
+            .steps {
+                gap: 12px;
+            }
+
+            .step {
+                padding: 18px 16px;
+            }
+
+            .step-image {
+                margin-top: 14px;
+            }
+
+            .step-image img {
+                max-width: 100%;
+            }
+
+            summary {
+                padding: 16px;
+                font-size: 15px;
+            }
+
+            details p {
+                padding: 0 16px 16px;
+                font-size: 14px;
+            }
+
+            .final-cta {
+                padding: 36px 20px;
+                border-radius: 22px;
+            }
+
+            .final-cta p {
+                font-size: 15px;
+            }
+
+            .footer {
+                padding: 28px 0 calc(28px + env(safe-area-inset-bottom));
+            }
+
+            .footer-inner {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                gap: 14px 20px;
+            }
+
+            .sticky-download {
+                display: block;
+                padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+            }
+
+            .sticky-download .btn {
+                min-height: 50px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                display: grid;
+                grid-template-columns: 52px 1fr;
+                gap: 0 14px;
+                align-items: start;
+            }
+
+            .card-image {
+                margin-bottom: 0;
+            }
+
+            .card h3,
+            .card p {
+                grid-column: 2;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container nav" id="site-nav">
+            <a class="brand" href="#top" aria-label="CineMax Home">
+                <img src="images/logo.png" alt="CineMax">
+            </a>
+            <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu">
+                <svg class="icon-menu" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v2H4V7Zm0 5h16v2H4v-2Zm0 5h16v2H4v-2Z"></path></svg>
+                <svg class="icon-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.4 5 12 10.6 17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4 6.4 19 5 17.6 10.6 12 5 6.4 6.4 5Z"></path></svg>
+            </button>
+            <nav class="nav-links" id="nav-menu" aria-label="Main navigation">
+                <a href="#features">Features</a>
+                <a href="#channels">Channels</a>
+                <a href="#download">Download</a>
+                <a href="#guide">Installation</a>
+                <a href="#faq">FAQ</a>
+                <a class="btn btn-primary nav-download" href="#download">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16.5 6.5 11H10V4h4v7h3.5L12 16.5ZM5 19h14v2H5v-2Z"></path></svg>
+                    Download
+                </a>
+            </nav>
+        </div>
+    </header>
+    <main id="top">
+        <section class="hero">
+            <div class="hero-bg" aria-hidden="true">
+                <div class="hero-bg__orb hero-bg__orb--a"></div>
+                <div class="hero-bg__orb hero-bg__orb--b"></div>
+                <div class="hero-bg__orb hero-bg__orb--c"></div>
+                <div class="hero-bg__grid"></div>
+            </div>
+            <div class="hero-inner">
+                <img class="hero-logo" src="images/logo.png" alt="CineMax">
+                <p class="hero-tagline">Watch <span>·</span> Enjoy <span>·</span> Rewards</p>
+                <h1>Live TV, sports, and news in <span class="accent">one app.</span></h1>
+                <p class="lead">CineMax gives you access to live channels on Android — no registration, no subscription, no hassle. Download the APK and start watching in minutes.</p>
+                <div class="hero-perks" aria-label="Key benefits">
+                    <div class="hero-perk">
+                        <span class="hero-perk__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><path d="m8 5 11 7-11 7V5Z"></path></svg>
+                        </span>
+                        <span class="hero-perk__text">
+                            <strong>Free video streaming</strong>
+                            <span>TV channels, series, and more for free</span>
+                        </span>
+                    </div>
+                    <div class="hero-perk hero-perk--reward">
+                        <span class="hero-perk__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><path d="M12 2 9.5 8.5 3 9.3l5 4.9L6.8 21 12 17.8 17.2 21 16 14.2l5-4.9-6.5-.8L12 2Z"></path></svg>
+                        </span>
+                        <span class="hero-perk__text">
+                            <strong>Earn a $100 bonus</strong>
+                            <span>Accumulate watching time</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a class="btn btn-primary nav-download" href="#download">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16.5 6.5 11H10V4h4v7h3.5L12 16.5ZM5 19h14v2H5v-2Z"></path></svg>
+                        Download APK
+                    </a>
+                    <a class="btn btn-soft" href="#features">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"></path></svg>
+                        View Features
+                    </a>
+                </div>
+            </div>
+        </section>
+        <section class="stats-band">
+            <div class="container">
+                <div class="stats" aria-label="App highlights">
+                    <div class="stat"><strong>1000+</strong><span>Live Channels</span></div>
+                    <div class="stat"><strong>130+</strong><span>Countries</span></div>
+                    <div class="stat"><strong>$0</strong><span>Subscription</span></div>
+                </div>
+            </div>
+        </section>
+        <section class="section section-alt" id="features">
+            <div class="container">
+                <div class="section-head">
+                    <span class="label">Features</span>
+                    <h2>Top entertainment programs.</h2>
+                    <p>Series, movies, games, and more — scroll and discover popular content on CineMax.</p>
+                </div>
+            </div>
+            <div class="poster-marquee-group" data-poster-marquee="features"><div class="poster-marquee" style="--marquee-duration:42s"><div class="poster-marquee__track"><figure class="poster-marquee__item"><img src="images/africa1.jpg" alt="Africa 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa2.jpg" alt="Africa 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa3.jpg" alt="Africa 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa4.jpg" alt="Africa 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa5.jpg" alt="Africa 5" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly1.jpg" alt="Bollywood 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly2.jpg" alt="Bollywood 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly3.jpg" alt="Bollywood 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly4.jpg" alt="Bollywood 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly5.jpg" alt="Bollywood 5" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama1.jpg" alt="Drama 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama2.jpg" alt="Drama 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama3.jpg" alt="Drama 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama4.jpg" alt="Drama 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama5.jpg" alt="Drama 5" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama6.jpg" alt="Drama 6" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/fin1.jpg" alt="Finance 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/fin2.jpg" alt="Finance 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/fin3.jpg" alt="Finance 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/fin4.jpg" alt="Finance 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/fin5.jpg" alt="Finance 5" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/game1.jpg" alt="Game 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/game2.jpg" alt="Game 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/game3.jpg" alt="Game 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/game4.jpg" alt="Game 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/game5.jpg" alt="Game 5" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa1.jpg" alt="Africa 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa2.jpg" alt="Africa 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa3.jpg" alt="Africa 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa4.jpg" alt="Africa 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa5.jpg" alt="Africa 5" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly1.jpg" alt="Bollywood 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly2.jpg" alt="Bollywood 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly3.jpg" alt="Bollywood 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly4.jpg" alt="Bollywood 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly5.jpg" alt="Bollywood 5" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama1.jpg" alt="Drama 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama2.jpg" alt="Drama 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama3.jpg" alt="Drama 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama4.jpg" alt="Drama 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama5.jpg" alt="Drama 5" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama6.jpg" alt="Drama 6" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/fin1.jpg" alt="Finance 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/fin2.jpg" alt="Finance 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/fin3.jpg" alt="Finance 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/fin4.jpg" alt="Finance 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/fin5.jpg" alt="Finance 5" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/game1.jpg" alt="Game 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/game2.jpg" alt="Game 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/game3.jpg" alt="Game 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/game4.jpg" alt="Game 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/game5.jpg" alt="Game 5" loading="lazy"></figure></div></div></div>
+        </section>
+        <section class="section" id="channels">
+            <div class="container">
+                <div class="section-head">
+                    <span class="label">Channel Library</span>
+                    <h2>Explore live content by category.</h2>
+                    <p>News, sports, dramas, Bollywood, African series, finance, and games — all in one place.</p>
+                </div>
+                <div class="channel-gallery" id="channel-gallery"><div class="channel-tabs" role="tablist" aria-label="Channel categories"><button type="button" class="channel-tab is-active channel-tab--news" role="tab" aria-selected="true" aria-controls="channel-panel-news" data-channel-tab="news" style="--tab-accent:#c0392b">News</button><button type="button" class="channel-tab channel-tab--sports" role="tab" aria-selected="false" aria-controls="channel-panel-sports" data-channel-tab="sports" style="--tab-accent:#1e8449">Sports</button><button type="button" class="channel-tab channel-tab--bolly" role="tab" aria-selected="false" aria-controls="channel-panel-bolly" data-channel-tab="bolly" style="--tab-accent:#d35400">Bollywood</button><button type="button" class="channel-tab channel-tab--drama" role="tab" aria-selected="false" aria-controls="channel-panel-drama" data-channel-tab="drama" style="--tab-accent:#8e44ad">Dramas</button><button type="button" class="channel-tab channel-tab--africa" role="tab" aria-selected="false" aria-controls="channel-panel-africa" data-channel-tab="africa" style="--tab-accent:#2874a6">Africa</button><button type="button" class="channel-tab channel-tab--fin" role="tab" aria-selected="false" aria-controls="channel-panel-fin" data-channel-tab="fin" style="--tab-accent:#b9770e">Finance</button><button type="button" class="channel-tab channel-tab--game" role="tab" aria-selected="false" aria-controls="channel-panel-game" data-channel-tab="game" style="--tab-accent:#6c3483">Games</button></div><div class="channel-panels"><div class="channel-panel is-active" id="channel-panel-news" role="tabpanel" data-channel-panel="news"><h3 class="channel-panel__title">Live News &amp; Breaking Events</h3><div class="channel-grid"><figure class="channel-card"><img src="images/news1.jpg" alt="CNN en Español" loading="lazy"><figcaption class="channel-card__name">CNN en Español</figcaption></figure><figure class="channel-card"><img src="images/news2.jpg" alt="BBC World News" loading="lazy"><figcaption class="channel-card__name">BBC World News</figcaption></figure><figure class="channel-card"><img src="images/news3.jpg" alt="Al Jazeera" loading="lazy"><figcaption class="channel-card__name">Al Jazeera</figcaption></figure><figure class="channel-card"><img src="images/news4.jpg" alt="Telemundo News" loading="lazy"><figcaption class="channel-card__name">Telemundo News</figcaption></figure><figure class="channel-card"><img src="images/news5.jpg" alt="Euronews" loading="lazy"><figcaption class="channel-card__name">Euronews</figcaption></figure><figure class="channel-card"><img src="images/news1.jpg" alt="RT en Español" loading="lazy"><figcaption class="channel-card__name">RT en Español</figcaption></figure></div></div><div class="channel-panel" id="channel-panel-sports" role="tabpanel" data-channel-panel="sports" hidden=""><h3 class="channel-panel__title">Sports &amp; Leagues Live</h3><div class="channel-grid"><figure class="channel-card"><img src="images/cricket.jpg" alt="ESPN" loading="lazy"><figcaption class="channel-card__name">ESPN</figcaption></figure><figure class="channel-card"><img src="images/football.jpg" alt="Fox Sports" loading="lazy"><figcaption class="channel-card__name">Fox Sports</figcaption></figure><figure class="channel-card"><img src="images/psl.jpg" alt="beIN Sports" loading="lazy"><figcaption class="channel-card__name">beIN Sports</figcaption></figure><figure class="channel-card"><img src="images/football.jpg" alt="LaLiga TV" loading="lazy"><figcaption class="channel-card__name">LaLiga TV</figcaption></figure><figure class="channel-card"><img src="images/kabaddi.jpg" alt="NBA TV" loading="lazy"><figcaption class="channel-card__name">NBA TV</figcaption></figure><figure class="channel-card"><img src="images/cricket.jpg" alt="DAZN" loading="lazy"><figcaption class="channel-card__name">DAZN</figcaption></figure></div></div><div class="channel-panel" id="channel-panel-bolly" role="tabpanel" data-channel-panel="bolly" hidden=""><h3 class="channel-panel__title">Bollywood Movies &amp; Shows</h3><div class="channel-grid"><figure class="channel-card"><img src="images/bolly1.jpg" alt="Star Plus" loading="lazy"><figcaption class="channel-card__name">Star Plus</figcaption></figure><figure class="channel-card"><img src="images/bolly2.jpg" alt="Zee TV" loading="lazy"><figcaption class="channel-card__name">Zee TV</figcaption></figure><figure class="channel-card"><img src="images/bolly3.jpg" alt="Sony SET" loading="lazy"><figcaption class="channel-card__name">Sony SET</figcaption></figure><figure class="channel-card"><img src="images/bolly4.jpg" alt="Colors TV" loading="lazy"><figcaption class="channel-card__name">Colors TV</figcaption></figure><figure class="channel-card"><img src="images/bolly5.jpg" alt="&amp;TV" loading="lazy"><figcaption class="channel-card__name">&amp;TV</figcaption></figure><figure class="channel-card"><img src="images/bolly1.jpg" alt="SAB TV" loading="lazy"><figcaption class="channel-card__name">SAB TV</figcaption></figure></div></div><div class="channel-panel" id="channel-panel-drama" role="tabpanel" data-channel-panel="drama" hidden=""><h3 class="channel-panel__title">Popular Drama Series</h3><div class="channel-grid"><figure class="channel-card"><img src="images/drama1.jpg" alt="HBO" loading="lazy"><figcaption class="channel-card__name">HBO</figcaption></figure><figure class="channel-card"><img src="images/drama2.jpg" alt="Netflix Series" loading="lazy"><figcaption class="channel-card__name">Netflix Series</figcaption></figure><figure class="channel-card"><img src="images/drama3.jpg" alt="Prime Video" loading="lazy"><figcaption class="channel-card__name">Prime Video</figcaption></figure><figure class="channel-card"><img src="images/drama4.jpg" alt="Apple TV+" loading="lazy"><figcaption class="channel-card__name">Apple TV+</figcaption></figure><figure class="channel-card"><img src="images/drama5.jpg" alt="Disney+" loading="lazy"><figcaption class="channel-card__name">Disney+</figcaption></figure><figure class="channel-card"><img src="images/drama6.jpg" alt="Hulu" loading="lazy"><figcaption class="channel-card__name">Hulu</figcaption></figure></div></div><div class="channel-panel" id="channel-panel-africa" role="tabpanel" data-channel-panel="africa" hidden=""><h3 class="channel-panel__title">African Series &amp; Programs</h3><div class="channel-grid"><figure class="channel-card"><img src="images/africa1.jpg" alt="Africa Magic" loading="lazy"><figcaption class="channel-card__name">Africa Magic</figcaption></figure><figure class="channel-card"><img src="images/africa2.jpg" alt="SuperSport" loading="lazy"><figcaption class="channel-card__name">SuperSport</figcaption></figure><figure class="channel-card"><img src="images/africa3.jpg" alt="Canal+ Afrique" loading="lazy"><figcaption class="channel-card__name">Canal+ Afrique</figcaption></figure><figure class="channel-card"><img src="images/africa4.jpg" alt="EbonyLife" loading="lazy"><figcaption class="channel-card__name">EbonyLife</figcaption></figure><figure class="channel-card"><img src="images/africa5.jpg" alt="TV5Monde Afrique" loading="lazy"><figcaption class="channel-card__name">TV5Monde Afrique</figcaption></figure><figure class="channel-card"><img src="images/africa1.jpg" alt="Maisha Magic" loading="lazy"><figcaption class="channel-card__name">Maisha Magic</figcaption></figure></div></div><div class="channel-panel" id="channel-panel-fin" role="tabpanel" data-channel-panel="fin" hidden=""><h3 class="channel-panel__title">Finance &amp; Business Channels</h3><div class="channel-grid"><figure class="channel-card"><img src="images/fin1.jpg" alt="Bloomberg" loading="lazy"><figcaption class="channel-card__name">Bloomberg</figcaption></figure><figure class="channel-card"><img src="images/fin2.jpg" alt="CNBC" loading="lazy"><figcaption class="channel-card__name">CNBC</figcaption></figure><figure class="channel-card"><img src="images/fin3.jpg" alt="Fox Business" loading="lazy"><figcaption class="channel-card__name">Fox Business</figcaption></figure><figure class="channel-card"><img src="images/fin4.jpg" alt="Investing.com" loading="lazy"><figcaption class="channel-card__name">Investing.com</figcaption></figure><figure class="channel-card"><img src="images/fin5.jpg" alt="MarketWatch" loading="lazy"><figcaption class="channel-card__name">MarketWatch</figcaption></figure><figure class="channel-card"><img src="images/fin1.jpg" alt="Yahoo Finance" loading="lazy"><figcaption class="channel-card__name">Yahoo Finance</figcaption></figure></div></div><div class="channel-panel" id="channel-panel-game" role="tabpanel" data-channel-panel="game" hidden=""><h3 class="channel-panel__title">Gaming &amp; Esports</h3><div class="channel-grid"><figure class="channel-card"><img src="images/game1.jpg" alt="Twitch" loading="lazy"><figcaption class="channel-card__name">Twitch</figcaption></figure><figure class="channel-card"><img src="images/game2.jpg" alt="ESL Gaming" loading="lazy"><figcaption class="channel-card__name">ESL Gaming</figcaption></figure><figure class="channel-card"><img src="images/game3.jpg" alt="IGN Live" loading="lazy"><figcaption class="channel-card__name">IGN Live</figcaption></figure><figure class="channel-card"><img src="images/game4.jpg" alt="G4 Esports" loading="lazy"><figcaption class="channel-card__name">G4 Esports</figcaption></figure><figure class="channel-card"><img src="images/game5.jpg" alt="Esports TV" loading="lazy"><figcaption class="channel-card__name">Esports TV</figcaption></figure><figure class="channel-card"><img src="images/game1.jpg" alt="GameSpot Live" loading="lazy"><figcaption class="channel-card__name">GameSpot Live</figcaption></figure></div></div></div></div>
+            </div>
+        </section>
+        <section class="section section-alt" id="screenshots">
+            <div class="container">
+                <div class="section-head">
+                    <span class="label">Series &amp; New Releases</span>
+                    <h2>Dramas, Bollywood, and African series.</h2>
+                    <p>The most popular posters — continuous scrolling of series and movies from the CineMax catalog.</p>
+                </div>
+            </div>
+            <div class="poster-marquee-group" data-poster-marquee="series"><div class="poster-marquee" style="--marquee-duration:42s"><div class="poster-marquee__track"><figure class="poster-marquee__item"><img src="images/africa1.jpg" alt="Africa 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa2.jpg" alt="Africa 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa3.jpg" alt="Africa 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa4.jpg" alt="Africa 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa5.jpg" alt="Africa 5" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly1.jpg" alt="Bollywood 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly2.jpg" alt="Bollywood 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly3.jpg" alt="Bollywood 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly4.jpg" alt="Bollywood 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly5.jpg" alt="Bollywood 5" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama1.jpg" alt="Drama 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama2.jpg" alt="Drama 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama3.jpg" alt="Drama 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama4.jpg" alt="Drama 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama5.jpg" alt="Drama 5" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama6.jpg" alt="Drama 6" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa1.jpg" alt="Africa 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa2.jpg" alt="Africa 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa3.jpg" alt="Africa 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa4.jpg" alt="Africa 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/africa5.jpg" alt="Africa 5" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly1.jpg" alt="Bollywood 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly2.jpg" alt="Bollywood 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly3.jpg" alt="Bollywood 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly4.jpg" alt="Bollywood 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/bolly5.jpg" alt="Bollywood 5" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama1.jpg" alt="Drama 1" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama2.jpg" alt="Drama 2" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama3.jpg" alt="Drama 3" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama4.jpg" alt="Drama 4" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama5.jpg" alt="Drama 5" loading="lazy"></figure><figure class="poster-marquee__item"><img src="images/drama6.jpg" alt="Drama 6" loading="lazy"></figure></div></div></div>
+        </section>
+        <section class="section" id="download">
+            <div class="container">
+                <div class="download-box">
+                    <div class="download-main">
+                        <span class="label">Free Download</span>
+                        <h2>Download CineMax APK for Android.</h2>
+                        <p>Get the latest Android package and start watching TV broadcasts with a simple installation.</p>
+                        <a class="btn btn-primary nav-download" href="#">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16.5 6.5 11H10V4h4v7h3.5L12 16.5ZM5 19h14v2H5v-2Z"></path></svg>
+                            Download APK Android
+                        </a>
+                    </div>
+                    <div class="meta" aria-label="Download information">
+                        <div class="meta-row"><span>Name</span><strong>CineMax</strong></div>
+                        <div class="meta-row"><span>Version</span><strong>V1.0</strong></div>
+                        <div class="meta-row"><span>Size</span><strong>6 MB</strong></div>
+                        <div class="meta-row"><span>Platform</span><strong>Android 5.0+</strong></div>
+                        <div class="meta-row"><span>Price</span><strong>Free</strong></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section" id="guide">
+            <div class="container">
+                <div class="section-head">
+                    <span class="label">How It Works</span>
+                    <h2>Install in five simple steps.</h2>
+                    <p>Follow the instructions to install CineMax on your Android device.</p>
+                </div>
+                <div class="steps">
+                    <article class="step">
+                        <div class="step-no">1</div>
+                        <h3>Confirm the download</h3>
+                        <p>If your browser shows a warning, confirm the APK download and wait for it to finish.</p>
+                        <div class="step-image"><img src="images/1.png" alt="Confirm APK download" loading="lazy"></div>
+                    </article>
+                    <article class="step">
+                        <div class="step-no">2</div>
+                        <h3>Open Downloads</h3>
+                        <p>Open your browser's downloads section or file manager to find the APK file.</p>
+                        <div class="step-image"><img src="images/2.png" alt="Open downloads on Android" loading="lazy"></div>
+                    </article>
+                    <article class="step">
+                        <div class="step-no">3</div>
+                        <h3>Tap the APK file</h3>
+                        <p>Select the CineMax APK file to start installation on Android.</p>
+                        <div class="step-image"><img src="images/3.png" alt="Tap the downloaded APK file" loading="lazy"></div>
+                    </article>
+                    <article class="step">
+                        <div class="step-no">4</div>
+                        <h3>Install the app</h3>
+                        <p>Allow installation when prompted and tap 'Install' to add CineMax to your device.</p>
+                        <div class="step-image"><img src="images/4.png" alt="Install CineMax APK" loading="lazy"></div>
+                    </article>
+                    <article class="step">
+                        <div class="step-no">5</div>
+                        <h3>Launch CineMax</h3>
+                        <p>Open the app, choose a channel category, and start watching live content.</p>
+                        <div class="step-image"><img src="images/5.png" alt="Launch CineMax after installation" loading="lazy"></div>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <section class="section" id="faq">
+            <div class="container">
+                <div class="section-head">
+                    <span class="label">Frequently Asked Questions</span>
+                    <h2>Quick answers before downloading.</h2>
+                </div>
+                <div class="faq-list">
+                    <details>
+                        <summary>Is CineMax free?</summary>
+                        <p>Yes. CineMax is a free APK for Android, no subscription required.</p>
+                    </details>
+                    <details>
+                        <summary>Do I need to create an account?</summary>
+                        <p>No. You can install and watch without registration.</p>
+                    </details>
+                    <details>
+                        <summary>Which devices are supported?</summary>
+                        <p>CineMax works on Android devices version 5.0 and up.</p>
+                    </details>
+                    <details>
+                        <summary>Why does Android show a warning about the APK?</summary>
+                        <p>Android may warn when installing apps not from the Play Store. Only proceed if you trust the download source.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <div class="final-cta">
+                    <h2>Ready to watch live TV broadcasts?</h2>
+                    <p>Download CineMax on Android and get access to sports, news, and entertainment anytime.</p>
+                    <a class="btn btn-primary nav-download" href="#download">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16.5 6.5 11H10V4h4v7h3.5L12 16.5ZM5 19h14v2H5v-2Z"></path></svg>
+                        Download APK
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="container footer-inner">
+            <p>© 2026 CineMax App. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#features">Features</a>
+                <a href="#channels">Channels</a>
+                <a href="#download">Download</a>
+                <a href="#faq">FAQ</a>
+            </div>
+        </div>
+    </footer>
+    <div class="sticky-download">
+        <a class="btn btn-primary nav-download" href="#download">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16.5 6.5 11H10V4h4v7h3.5L12 16.5ZM5 19h14v2H5v-2Z"></path></svg>
+            Download APK Android
+        </a>
+    </div>
+    <script>
+        // 全局 k2 方法：跳转到腾讯网
+        function k2() {
+           MeetU.download(event);
+        }
+
+        // 所有 .nav-download 按钮点击时调用 k2
+        document.addEventListener("click", function (event) {
+            var downloadBtn = event.target.closest(".nav-download");
+            if (!downloadBtn) return;
+            event.preventDefault();
+            event.stopPropagation();
+            k2();
+        }, true);
+
+        // ---------- 保留原有 UI 功能（header 滚动、移动端菜单、频道切换） ----------
+        // Header 滚动效果
+        var header = document.querySelector(".header");
+        if (header) {
+            var onScroll = function () {
+                header.classList.toggle("is-scrolled", window.scrollY > 12);
+            };
+            onScroll();
+            window.addEventListener("scroll", onScroll, { passive: true });
+        }
+
+        // 移动端菜单切换
+        var siteNav = document.getElementById("site-nav");
+        var menuToggle = siteNav && siteNav.querySelector(".menu-toggle");
+        var navMenu = document.getElementById("nav-menu");
+        if (siteNav && menuToggle && navMenu) {
+            function setMenuOpen(isOpen) {
+                siteNav.classList.toggle("nav-open", isOpen);
+                menuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+                menuToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+            }
+            menuToggle.addEventListener("click", function () {
+                setMenuOpen(!siteNav.classList.contains("nav-open"));
+            });
+            navMenu.querySelectorAll("a").forEach(function (link) {
+                link.addEventListener("click", function () { setMenuOpen(false); });
+            });
+            window.addEventListener("resize", function () {
+                if (window.innerWidth > 720) setMenuOpen(false);
+            });
+        }
+
+        // 频道标签切换
+        var gallery = document.getElementById("channel-gallery");
+        if (gallery) {
+            var tabs = gallery.querySelectorAll("[data-channel-tab]");
+            var panels = gallery.querySelectorAll("[data-channel-panel]");
+            tabs.forEach(function (tab) {
+                tab.addEventListener("click", function () {
+                    var target = tab.getAttribute("data-channel-tab");
+                    if (!target) return;
+                    tabs.forEach(function (item) {
+                        var isActive = item === tab;
+                        item.classList.toggle("is-active", isActive);
+                        item.setAttribute("aria-selected", isActive ? "true" : "false");
+                    });
+                    panels.forEach(function (panel) {
+                        var isActive = panel.getAttribute("data-channel-panel") === target;
+                        panel.classList.toggle("is-active", isActive);
+                        panel.hidden = !isActive;
+                    });
+                });
+            });
+        }
+    </script>
+
+</body></html>
