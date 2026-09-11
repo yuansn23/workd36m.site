@@ -93,10 +93,19 @@
   .hero .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(800px 500px at 50% 30%,#000 30%,transparent 80%);pointer-events:none}
   .hero h1{font-family:var(--headline);font-weight:600;font-size:56px;line-height:1.08;letter-spacing:-.5px;text-transform:capitalize;max-width:900px;margin:0 auto 22px}
   .hero .sub{font-family:var(--body);font-weight:400;font-size:19px;line-height:1.5;color:var(--ink-2);max-width:640px;margin:0 auto 40px}
-  .hero .media{max-width:820px;margin:0 auto 46px;border-radius:25px;box-shadow:1px 1px 30px 1px #4ec3e9;padding:10px;background:transparent}
-  .hero .media .frame{position:relative;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,#0a0f1a,#0d1526 60%,#0a1a2a);border:1px solid rgba(78,195,233,.35);aspect-ratio:16/9}
-  .hero .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:74px;height:74px;border-radius:50%;background:rgba(255,255,255,.12);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.25)}
-  .hero .play svg{width:28px;height:28px;fill:#fff;margin-left:4px}
+  .hero-letter{max-width:760px;margin:0 auto 46px;text-align:left}
+  .hero-letter .lead{font-size:26px;font-weight:700;line-height:1.4;color:#fff;margin-bottom:22px}
+  .hero-letter .lead strong{color:var(--green-lime);font-weight:800}
+  .hero-letter .copy{font-size:17px;line-height:1.65;color:var(--ink-2);margin-bottom:18px}
+  .hero-letter .copy strong{color:#fff;font-weight:700}
+  .hero-letter .accent{color:var(--cyan);font-weight:600}
+  .hero-letter .perf{margin:26px 0;padding:22px 24px;border:1px solid rgba(55,202,55,.25);border-radius:14px;background:rgba(255,255,255,.03)}
+  .hero-letter .perf-title{font-family:var(--button);font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:16px;text-align:center}
+  .hero-letter .years{list-style:none;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .hero-letter .years li{flex:1 1 88px;max-width:118px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:11px 6px;border-radius:9px;background:rgba(255,255,255,.04)}
+  .hero-letter .years span{font-size:11px;color:rgba(255,255,255,.55);letter-spacing:.4px}
+  .hero-letter .years b{font-size:14px;font-weight:800;color:var(--green-lime)}
+  .hero-letter .disclaimer{font-size:13px;line-height:1.6;color:rgba(255,255,255,.45)}
 
   /* ============ Section 2 (algo pitch) ============ */
   .pitch{padding:60px 0 40px;background:
@@ -240,9 +249,12 @@
     .hero{padding:48px 0 64px}
     .hero h1{font-size:36px;letter-spacing:-.2px}
     .hero .sub{font-size:16px;margin-bottom:28px}
-    .hero .media{margin-bottom:32px;border-radius:18px;padding:6px}
-    .hero .play{width:56px;height:56px}
-    .hero .play svg{width:22px;height:22px}
+    .hero-letter{max-width:100%;margin-bottom:36px}
+    .hero-letter .lead{font-size:22px}
+    .hero-letter .copy{font-size:16px;line-height:1.6}
+    .hero-letter .perf{padding:18px 14px;margin:22px 0}
+    .hero-letter .years li{flex:1 1 76px;padding:9px 4px}
+    .hero-letter .years b{font-size:13px}
 
     .pitch{padding:44px 0 28px}
     .pitch h2{font-size:30px;margin-bottom:18px}
@@ -323,25 +335,34 @@
     <h1>Discover The Momentum Stock Strategy Built To Identify Market Leaders</h1>
     <p class="sub">Built For Investors With Serious Money In The Market</p>
 
-    <!-- Video placeholder (original embeds a video with a cyan glow) -->
-    <div class="media">
-      <div class="frame">
-        <svg width="100%" height="100%" viewBox="0 0 800 450" preserveAspectRatio="none" style="position:absolute;inset:0">
-          <defs>
-            <linearGradient id="chartline" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#37ca37"/><stop offset="1" stop-color="#03ffff"/>
-            </linearGradient>
-          </defs>
-          <g fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1">
-            <line x1="0" y1="90" x2="800" y2="90"/><line x1="0" y1="180" x2="800" y2="180"/>
-            <line x1="0" y1="270" x2="800" y2="270"/><line x1="0" y1="360" x2="800" y2="360"/>
-            <line x1="160" y1="0" x2="160" y2="450"/><line x1="320" y1="0" x2="320" y2="450"/>
-            <line x1="480" y1="0" x2="480" y2="450"/><line x1="640" y1="0" x2="640" y2="450"/>
-          </g>
-          <path d="M0 400 C 90 390, 120 320, 200 340 S 320 360, 360 280 S 470 220, 520 200 S 640 120, 700 110 S 780 70, 800 60" fill="none" stroke="url(#chartline)" stroke-width="3.5"/>
-        </svg>
-        <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <!-- Pitch letter (replaces the original video) -->
+    <div class="hero-letter">
+      <p class="lead">If you have <strong>$53,000+</strong> invested in the stock market, give me two minutes.</p>
+
+      <p class="copy">Aurora Mind shows you exactly which stocks the system currently recommends watching and holding — no hours spent researching companies, staring at charts, or trading like a full-time professional.</p>
+
+      <p class="copy"><span class="accent">The idea is simple:</span> rather than predict every short-term swing, focus on the stocks showing the strength the system looks for.</p>
+
+      <div class="perf">
+        <div class="perf-title">Historical annual results</div>
+        <ul class="years">
+          <li><span>2020</span><b>+98.16%</b></li>
+          <li><span>2021</span><b>+0.91%</b></li>
+          <li><span>2022</span><b>+7.64%</b></li>
+          <li><span>2023</span><b>+14.43%</b></li>
+          <li><span>2024</span><b>+103.12%</b></li>
+          <li><span>2025</span><b>+28.76%</b></li>
+          <li><span>2026 YTD</span><b>+28.83%</b></li>
+        </ul>
       </div>
+
+      <p class="copy">Not every month is profitable — we've had losing months, drawdowns, and flat stretches. That's investing. No system can guarantee returns.</p>
+
+      <p class="copy">Open Aurora Mind and see the stocks the system is tracking and its current direction. When its judgment changes, you'll know — no more morning guesswork about what to buy, hold, or sell.</p>
+
+      <p class="copy">Our goal is a system you can follow — not a second full-time job. If you have <strong>$53,000+</strong> invested, or ready to invest it, click below and contact our assistant on WhatsApp.</p>
+
+      <p class="disclaimer">We don't guarantee market performance. What we control is our service: if we don't deliver the system access, onboarding, and setup support we promise, you don't pay.</p>
     </div>
 
     <a class="btn btn-green btn-glimmer" href="#" data-open-quiz>
